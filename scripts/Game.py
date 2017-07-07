@@ -1,10 +1,11 @@
 from random import shuffle
 
 class Game(object):
+    """Represents a game of Secret Hitler."""
     def __init__(self, cid, initiator):
         self.playerlist = {}
         self.player_sequence = []
-        self.cid = cid
+        self.channel = cid
         self.board = None
         self.initiator = initiator
 
@@ -30,7 +31,7 @@ class Game(object):
 
     def remove_from_player_sequence(self, Player):
         for p in self.player_sequence:
-            if p.uid == Player.uid:
+            if p.user.id == Player.user.id:
                 p.remove(Player)
 
     def print_roles(self):

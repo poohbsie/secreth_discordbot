@@ -1,7 +1,8 @@
 class Player(object):
-    def __init__(self, name, uid):
+    """Represents a player in a game of Secret Hitler."""
+    def __init__(self, name, user):
         self.name = name
-        self.uid = uid
+        self.user = user
         self.role = None
         self.party = None
         self.is_dead = False

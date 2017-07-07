@@ -3,7 +3,7 @@ from main import games, log
 import discord
 import random
 from random import randrange
-from time import sleep, time
+from time import sleep, time, monotonic
 import json
 
 from Board import Board
@@ -306,6 +306,8 @@ async def choose_chancellor(bot, game):
         # game, only the last elected Chancellor is
         # ineligible to be Chancellor Candidate; the
         # last President may be nominated.
+        if monotonic() > game.playerlist[uid].last_input + 20:
+            game.playerlist[uid].is_dead = True
         if len(game.player_sequence) > 5:
             if uid != game.board.state.nominated_president.user.id and game.playerlist[
                 uid].is_dead == False and uid != pres_uid and uid != chan_uid:
@@ -372,6 +374,8 @@ async def nominate_chosen_chancellor(bot, cid, chosen_uid):
 async def vote(bot, game):
     log.info('vote called')
     for uid in game.playerlist:
+        if monotonic() > game.playerlist[uid].last_input + 20:
+            game.playerlist[uid].is_dead = True
         if not game.playerlist[uid].is_dead:
             await bot.send_message(game.channel, 'Awaiting {}\'s vote...'.format(game.playerlist[uid].name))
             if game.playerlist[uid] is not game.board.state.nominated_president:
@@ -401,15 +405,19 @@ async def vote(bot, game):
 
                 return True
 
+            voted_msg = await bot.send_message(game.channel, embed=discord.Embed(title="Voted:", description="*Nobody has voted*"))
+
             await bot.wait_for_message(author=game.playerlist[uid], check=check_vote, timeout=30)
-            await handle_voting(bot, game, game.playerlist[uid], vote)
+            await handle_voting(bot, game, game.playerlist[uid], vote if vote else True, voted_msg)
 
 
-async def handle_voting(bot, game, player, vote):
+async def handle_voting(bot, game, player, vote, voted_msg):
     try:
         answer = "Ja" if vote else "Nein"
 
         await bot.send_message(player.user, "Thank you for your vote: %s to a President %s and a Chancellor %s" % (vote, game.board.state.nominated_president.name, game.board.state.nominated_chancellor.name))
+
+        await bot.edit_message(voted_msg, embed=discord.Embed(title="Voted:", description=voted_msg.embeds[0].description + "\n- " + player.name if not voted_msg.embeds[0].description == "*Nobody has voted*" else "- " + player.name))
 
         log.info("Player %s (%d) voted %s" % (player.name, player.user.id, answer))
         if player.user.id not in game.board.state.last_votes:

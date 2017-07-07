@@ -1,4 +1,4 @@
-__author__ = "Julian Schrittwieser"
+__author__ = "James Shiffer"
 
 players = {
     # only for testing purposes

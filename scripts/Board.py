@@ -15,7 +15,7 @@ class Board(object):
         board = "--- Liberal acts ---\n"
         for i in range(5):
             if i < self.state.liberal_track:
-                board += u"\u2716\uFE0F" + " " #X
+                board += ":x: " #X
             elif i >= self.state.liberal_track and i == 4:
                 board += u"\U0001F54A" + " " #dove
             else:
@@ -23,7 +23,7 @@ class Board(object):
         board += "\n--- Fascist acts ---\n"
         for i in range(6):
             if i < self.state.fascist_track:
-                board += u"\u2716\uFE0F" + " " #X
+                board += ":x: " #X
             else:
                 action = self.fascist_track_actions[i]
                 if action == None:
@@ -42,7 +42,7 @@ class Board(object):
         board += "\n--- Election counter ---\n"
         for i in range(3):
             if i < self.state.failed_votes:
-                board += u"\u2716\uFE0F" + " " #X
+                board += ":x: " #X
             else:
                 board += u"\u25FB\uFE0F" + " " #empty
 

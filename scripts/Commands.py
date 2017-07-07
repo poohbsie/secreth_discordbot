@@ -6,7 +6,6 @@ from random import randrange
 from time import sleep, time
 import json
 
-from os import system
 from Board import Board
 from Constants import players
 from Game import Game

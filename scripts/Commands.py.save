@@ -68,19 +68,19 @@ async def command_start(bot, msg, args):
 
 async def command_rules(bot, msg, args):
     """Sends a link to the official Secret Hitler rules."""
-    await discord.abc.Messageable.send(msg.channel, embed=discord.Embed(title="Read the official Secret Hitler rules", description="http://www.secrethitler.com/assets/Secret_Hitler_Rules.pdf"))
+    await discord.abc.Messageable.send(msg.channel, discord.Embed(title="Read the official Secret Hitler rules", description="http://www.secrethitler.com/assets/Secret_Hitler_Rules.pdf"))
 
 
 # pings the bot
 async def command_ping(bot, msg, args):
     """Pings the bot to check latency."""
     t1 = time()
-    pong_msg = await discord.abc.Messageable.send(msg.channel,':ping_pong: Pong')
+    pong_msg = await discord.abc.Messageable.send(msg.channel, ':ping_pong: Pong')
     t2 = time()
 
     diff = round((t2 - t1) * 1000, 2)
 
-    await discord.Message.edit(pong_msg, content=":ping_pong: Pong **{} ms**".format(diff))
+    await discord.Message.edit(pong_msg)
 
 
 async def command_invite(bot, msg, args):

@@ -64,7 +64,7 @@ async def on_message(msg):
         log.debug('Invalid command "sh?' + cmd + '"')
         return
 
-    await bot.send_typing(msg.channel)
+    await discord.abc.Messageable.trigger_typing(msg.channel)
     log.debug('"command_' + cmd + '" called')
     await cmd_func(bot, msg, args)
 
@@ -72,8 +72,8 @@ async def on_message(msg):
 async def update_status():
     while True:
         await bot.change_presence(
-            game=discord.Game(
-                name="{}help | {} servers".format(PREFIX, len(bot.servers))
+            activity=discord.Game(
+                name="{}help | {} servers".format(PREFIX, len(bot.guilds))
             )
         )
         await asyncio.sleep(5)
